@@ -58,7 +58,7 @@ class ProxyListenTcpInterfaceProvides(Object):
 
     def __init__(self, charm, relation_name):
         super().__init__(charm, relation_name)
-        self._relation_name
+        self._relation_name = relation_name
         # TODO: there could be multiple independent reverse proxies in theory, address that later.
         self._relation = self.model.get_relation(relation_name)
 
