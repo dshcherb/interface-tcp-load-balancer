@@ -29,9 +29,9 @@ class ProxyListenTcpInterfaceRequires(Object):
         super().__init__(charm, relation_name)
         self._relation_name = relation_name
         self._listen_proxies = None
-        self.framework.observe(charm.on[relation_name].changed, self.on_changed)
+        self.framework.observe(charm.on[relation_name].relation_changed, self.on_relation_changed)
 
-    def on_changed(self, event):
+    def on_relation_changed(self, event):
         self.on.backends_changed.emit()
 
     @property
