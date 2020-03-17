@@ -44,7 +44,7 @@ class ProxyListenTcpInterfaceRequires(Object):
                 listen_options.append('mode tcp')
                 server_options = []
                 for unit in relation.units:
-                    server_option = relation.data[relation.unit].get('server_option')
+                    server_option = relation.data[unit].get('server_option')
                     if server_option is not None:
                         server_options.append(server_option)
 
