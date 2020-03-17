@@ -26,7 +26,7 @@ class ProxyListenTcpInterfaceRequires(Object):
     state = StoredState()
 
     def __init__(self, charm, relation_name):
-        super().__init__(charm)
+        super().__init__(charm, relation_name)
         self._relation_name = relation_name
         self._listen_proxies = None
         self.framework.observe(charm.on[relation_name].changed, self.on_changed)
