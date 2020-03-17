@@ -47,10 +47,11 @@ class ProxyListenTcpInterfaceRequires(Object):
                     server_option = relation.data[unit].get('server_option')
                     if server_option is not None:
                         server_options.append(server_option)
-
-                section_name = f'{relation.name}_{relation.id}_{relation.app.name}'
-                self._listen_proxies.append(
-                    ListenProxyData(section_name, listen_options, server_options))
+                # Only expose a section if there are actual backends present.
+                if relation.units:
+                    section_name = f'{relation.name}_{relation.id}_{relation.app.name}'
+                    self._listen_proxies.append(
+                        ListenProxyData(section_name, listen_options, server_options))
         return self._listen_proxies
 
 
