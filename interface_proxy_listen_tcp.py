@@ -58,6 +58,19 @@ class ProxyListenTcpInterfaceRequires(Object):
                         ListenProxyData(section_name, listen_options, server_options))
         return self._listen_proxies
 
+    @property
+    def frontend_ports(self):
+        _ports = []
+        for relation in self.model.relations[self._relation_name]:
+            # TODO: Work around https://github.com/canonical/operator/issues/175.
+            # Once a -joined event actually fires we will process this relation.
+            if not relation.units:
+                continue
+            frontend_port = relation.data[relation.app].get('frontend_port')
+            if frontend_port is not None:
+                _ports.append(frontend_port)
+        return _ports
+
 
 class ProxyListenTcpInterfaceProvides(Object):
 
