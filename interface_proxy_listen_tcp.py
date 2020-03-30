@@ -67,9 +67,10 @@ class ProxyListenTcpInterfaceProvides(Object):
         # TODO: there could be multiple independent reverse proxies in theory, address that later.
         self._relation = self.model.get_relation(relation_name)
 
-    def expose_server(self, listen_options, server_option):
+    def expose_server(self, frontend_port, listen_options, server_option):
         # Expose common settings via app relation data from a leader unit.
         if self.model.unit.is_leader():
             app_data = self._relation.data[self.model.app]
+            app_data['frontend_port'] = frontend_port
             app_data['listen_options'] = json.dumps(listen_options)
         self._relation.data[self.model.unit]['server_option'] = server_option
