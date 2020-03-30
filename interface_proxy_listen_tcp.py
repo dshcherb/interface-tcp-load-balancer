@@ -84,6 +84,6 @@ class ProxyListenTcpInterfaceProvides(Object):
         # Expose common settings via app relation data from a leader unit.
         if self.model.unit.is_leader():
             app_data = self._relation.data[self.model.app]
-            app_data['frontend_port'] = frontend_port
+            app_data['frontend_port'] = str(frontend_port)
             app_data['listen_options'] = json.dumps(listen_options)
         self._relation.data[self.model.unit]['server_option'] = server_option
