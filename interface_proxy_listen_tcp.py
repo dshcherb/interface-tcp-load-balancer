@@ -39,6 +39,10 @@ class ProxyListenTcpInterfaceRequires(Object):
         if self._listen_proxies is None:
             self._listen_proxies = []
             for relation in self.model.relations[self._relation_name]:
+                # TODO: Work around https://github.com/canonical/operator/issues/175.
+                # Once a -joined event actually fires we will process this relation.
+                if not relation.units:
+                    continue
                 app_data = relation.data[relation.app]
                 listen_options = json.loads(app_data.get('listen_options', '[]'))
                 listen_options.append('mode tcp')
