@@ -1,13 +1,13 @@
 import json
 
-from ops.framework import Object, StoredState, EventBase, EventsBase, EventSource
+from ops.framework import Object, StoredState, EventBase, EventSetBase, EventSource
 
 
 class BackendsChanged(EventBase):
     pass
 
 
-class InterfaceProvidesEvents(EventsBase):
+class InterfaceProvidesEvents(EventSetBase):
     backends_changed = EventSource(BackendsChanged)
 
 
