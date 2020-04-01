@@ -77,8 +77,11 @@ class ProxyListenTcpInterfaceProvides(Object):
     def __init__(self, charm, relation_name):
         super().__init__(charm, relation_name)
         self._relation_name = relation_name
+
+    @property
+    def _relation(self):
         # TODO: there could be multiple independent reverse proxies in theory, address that later.
-        self._relation = self.model.get_relation(relation_name)
+        return self.model.get_relation(self._relation_name)
 
     def expose_server(self, frontend_port, listen_options, server_option):
         # Expose common settings via app relation data from a leader unit.
