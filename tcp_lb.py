@@ -54,7 +54,7 @@ load-balancer should provide load-balancing for::
             listener = Listener(
                 name=self.app.name.replace('/', '_'),
                 port=self.LISTENER_PORT,
-                balancing_algorithm='round_robin',
+                balancing_algorithm=BalancingAlgorithm.ROUND_ROBIN,
             )
             fqdn = socket.getfqdn()
             backend = Backend(fqdn, self.SERVICE_PORT, monitor_port=self.MONITOR_PORT)
@@ -63,7 +63,7 @@ load-balancer should provide load-balancing for::
                 http_method='GET',
                 url_path='/health?ready=1'
             )
-            self.tcp_lb.expose_backend(listener, backend, health_monitor)
+            self.tcp_lb.expose_backend(backend, listener, health_monitor)
 """
 
 import logging
@@ -225,7 +225,7 @@ class TCPLoadBalancer(Object):
         our_unit_data = rel.data[self.model.unit]
         if backend.address is None:
             addr = self.model.get_binding(rel).network.ingress_address
-            backend.address = addr
+            backend.address = str(addr)
 
         our_unit_data['backend'] = json.dumps(backend, cls=InterfaceDataEncoder,
                                               **JSON_ENCODE_OPTIONS)
@@ -286,7 +286,7 @@ class HealthMonitor(SimpleNamespace):
 class HTTPHealthMonitor(HealthMonitor):
     """HTTP health monitors provide parameters to perform health-checks over HTTP."""
 
-    def __init__(self, http_method=None, url_path=None, expected_codes=None, *kwargs):
+    def __init__(self, http_method=None, url_path=None, expected_codes=None, **kwargs):
         super().__init__(**kwargs)
         self.http_method = http_method
         self.url_path = url_path
